@@ -1,0 +1,142 @@
+.bg-alt {
+  background-color: var(--bg-surface);
+  position: relative;
+}
+
+.about-content {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.about-text {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+.mb-4 {
+  margin-bottom: 1rem;
+}
+
+.inline-icon {
+  color: var(--accent-primary);
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+.timeline-title {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+}
+
+.education-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: relative;
+}
+
+.education-timeline::before {
+  content: '';
+  position: absolute;
+  top: 4rem;
+  left: 2rem;
+  bottom: 2rem;
+  width: 2px;
+  background: var(--border-color);
+  z-index: 0;
+}
+
+.timeline-item {
+  position: relative;
+  padding: 1.5rem 2rem;
+  z-index: 1;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -2rem;
+  top: 2rem;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-gradient);
+  box-shadow: 0 0 10px var(--accent-primary);
+  transform: translateX(-50%);
+}
+
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
+}
+
+.institution {
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+
+.duration {
+  color: var(--accent-primary);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 500;
+  background: rgba(59, 130, 246, 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+}
+
+.degree {
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.highlight {
+  color: var(--text-primary);
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.location {
+  opacity: 0.7;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+.text-sm {
+  font-size: 0.85rem;
+}
+
+.coursework {
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-color);
+  font-size: 0.95rem;
+}
+
+.coursework strong {
+  display: block;
+  margin-bottom: 0.25rem;
+  color: var(--text-primary);
+}
+
+@media (max-width: 992px) {
+  .about-content {
+    grid-template-columns: 1fr;
+  }
+  
+  .education-timeline::before {
+    left: 1rem;
+  }
+  
+  .timeline-dot {
+    left: -1rem;
+  }
+}
