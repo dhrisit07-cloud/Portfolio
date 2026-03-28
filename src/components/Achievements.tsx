@@ -5,8 +5,8 @@ import './Achievements.css';
 const achievements = [
   {
     icon: <Trophy size={40} className="achievement-icon" />,
-    title: "1st Place - Ideathon",
-    event: "GUenARK 2026, Gauhati University",
+    title: "1st Place - HACK-To-HIRE Ideathon",
+    event: "Gauhati University",
     description: "Secured first place at the university-level Ideathon (Startup Exhibition, Incubation & 24-Hour Hackathon) for an innovative tech solution recognised for its real-world feasibility."
   },
   {
