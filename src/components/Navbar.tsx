@@ -15,6 +15,7 @@ const Navbar: React.FC = () => {
     { label: 'Skills', href: '#skills' },
     { label: 'Experience', href: '#experience' },
     { label: 'Projects', href: '#projects' },
+    { label: 'Resume', href: 'https://drive.google.com/file/d/1uRU4UV40gReP-KM_hJ40tVajdSrl4M9Z/view?usp=sharing', external: true },
   ];
 
   return (
@@ -28,7 +29,12 @@ const Navbar: React.FC = () => {
         <ul className={`nav-links ${isMobileOpen ? 'mobile-open' : ''}`}>
           {navItems.map((item) => (
             <li key={item.label}>
-              <a href={item.href} className="nav-link" onClick={() => setIsMobileOpen(false)}>
+              <a 
+                href={item.href} 
+                className="nav-link" 
+                onClick={() => setIsMobileOpen(false)}
+                {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+              >
                 {item.label}
               </a>
             </li>
