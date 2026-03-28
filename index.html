@@ -41,7 +41,7 @@
     border: 2px solid rgba(0,240,255,0.6); /* Thicker boundary */
     border-radius: 50%;
     pointer-events: none;
-    z-index: 9998;
+    z-index: 20000; /* Above modal (10000) */
     transform: translate(-50%, -50%);
     transition: transform 0.2s ease, border-color 0.2s ease; /* Only smooth size/color changes */
   }
@@ -676,7 +676,8 @@
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 14px;
-    padding: 1.8rem;
+    padding: 2.2rem 1.8rem;
+    min-height: 240px;
     display: flex;
     flex-direction: column;
     transition: all 0.3s ease;
@@ -694,9 +695,14 @@
   }
 
   .project-card:hover {
-    border-color: rgba(0,240,255,0.2);
-    transform: translateY(-6px);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.4), 0 0 30px rgba(0,240,255,0.05);
+    border-color: var(--accent);
+    transform: translateY(-8px);
+    box-shadow: 0 0 30px rgba(0,240,255,0.15), 0 20px 60px rgba(0,0,0,0.5); /* Stronger glow */
+    cursor: pointer;
+  }
+
+  .project-card:hover .project-num {
+    color: rgba(0, 240, 255, 0.25);
   }
 
   .project-card:hover::before { opacity: 1; }
@@ -704,50 +710,155 @@
   .project-num {
     font-family: 'Syne', sans-serif;
     font-weight: 800;
-    font-size: 2.5rem;
-    color: rgba(255,255,255,0.04);
+    font-size: 3rem; /* Slightly reduced from 3.5rem */
+    color: rgba(0, 240, 255, 0.12); /* More visible cyan */
     line-height: 1;
     margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
   }
 
   .project-title {
     font-family: 'Syne', sans-serif;
     font-weight: 700;
-    font-size: 1.15rem;
-    margin-bottom: 0.6rem;
+    font-size: 1.3rem;
+    margin-bottom: 0;
     color: var(--text);
   }
 
-  .project-desc {
-    font-size: 0.87rem;
-    line-height: 1.7;
-    color: var(--muted);
-    flex: 1;
-    margin-bottom: 1.4rem;
+  .project-card .project-desc, 
+  .project-card .project-stack, 
+  .project-card .project-link {
+    display: none !important;
   }
 
-  .project-stack {
+  /* MODAL STYLES */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(13, 17, 23, 0.85);
+    backdrop-filter: blur(12px);
+    z-index: 10000;
+    display: none; /* Shown via JS */
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .modal-overlay.active {
+    display: flex !important;
+    opacity: 1;
+  }
+
+  .modal-card {
+    background: rgba(22, 27, 34, 0.95);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    max-width: 650px;
+    width: 100%;
+    padding: 2.5rem;
+    position: relative;
+    box-shadow: 0 25px 80px rgba(0,0,0,0.6);
+    transform: scale(0.9);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .modal-overlay.active .modal-card {
+    transform: scale(1);
+  }
+
+
+  .modal-header {
+    margin-bottom: 2rem;
+  }
+
+  .modal-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.1em;
+  }
+
+  .modal-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 2.2rem;
+    line-height: 1.1;
+  }
+
+  .modal-body {
+    font-size: 1rem;
+    line-height: 1.8;
+    color: var(--text);
+    margin-bottom: 2.5rem;
+  }
+
+  .modal-stack {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.4rem;
-    margin-bottom: 1.2rem;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
   }
 
-  .stack-tag {
-    font-family: 'DM Mono', monospace;
-    font-size: 0.62rem;
-    padding: 0.2rem 0.55rem;
-    border-radius: 3px;
-    background: rgba(255,107,53,0.08);
-    border: 1px solid rgba(255,107,53,0.18);
-    color: var(--accent3);
-    letter-spacing: 0.05em;
-  }
-
-  .project-link {
+  .modal-tag {
     font-family: 'DM Mono', monospace;
     font-size: 0.7rem;
+    padding: 0.3rem 0.8rem;
+    background: rgba(0,240,255,0.08);
+    border: 1px solid rgba(0,240,255,0.2);
     color: var(--accent);
+    border-radius: 4px;
+  }
+
+  .modal-footer {
+    display: flex;
+    gap: 1rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .modal-btn {
+    padding: 0.8rem 1.4rem;
+    border-radius: 8px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.8rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .modal-btn.primary {
+    background: var(--accent);
+    color: var(--bg);
+    font-weight: 700;
+  }
+
+  .modal-btn.secondary {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .modal-btn:hover {
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  }
+
+  .modal-btn.primary:hover {
+    background: #fff;
+    box-shadow: 0 0 30px rgba(0,240,255,0.5);
+    color: #000;
+  }
+
+  .modal-btn.secondary:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.3);
+  }
+  .project-link {
     text-decoration: none;
     letter-spacing: 0.08em;
     display: inline-flex;
@@ -1636,6 +1747,73 @@
     navLinks.forEach(a => {
       a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
     });
+  });
+</script>
+
+<div id="projectModal" class="modal-overlay">
+  <div class="modal-card">
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+  // Project Modal Logic
+  const modal = document.getElementById('projectModal');
+  const modalBody = document.getElementById('modalBody');
+
+  document.querySelectorAll('.project-card').forEach(card => {
+    card.addEventListener('click', () => {
+      console.log('Modal opened for:', card.querySelector('.project-title').innerText);
+      const num = card.querySelector('.project-num').textContent;
+      const title = card.querySelector('.project-title').textContent;
+      const desc = card.querySelector('.project-desc').innerHTML;
+      const tags = Array.from(card.querySelectorAll('.stack-tag')).map(t => `<span class="modal-tag">${t.textContent}</span>`).join('');
+      const link = card.querySelector('.project-link');
+      
+      let footerHtml = '';
+      if (link) {
+        const href = link.getAttribute('href');
+        const text = link.innerText;
+        footerHtml = `<a href="${href}" target="_blank" class="modal-btn primary">${text}</a>`;
+      }
+      
+      // If there are multiple links or specific structure, handle accordingly
+      // For now, let's just use the primary link provided in the card
+      
+      modalBody.innerHTML = `
+        <div class="modal-header">
+          <div class="modal-num">${num}</div>
+          <h2 class="modal-title">${title}</h2>
+        </div>
+        <div class="modal-body">
+          <p>${desc}</p>
+          <div class="modal-stack">${tags}</div>
+        </div>
+        <div class="modal-footer">
+          ${footerHtml}
+          <button class="modal-btn secondary" onclick="document.getElementById('projectModal').classList.remove('active')">Close</button>
+        </div>
+      `;
+      
+      modal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+  });
+
+
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+  });
+
+  // ESC key to close modal
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal.classList.contains('active')) {
+      modal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
   });
 </script>
 </body>
