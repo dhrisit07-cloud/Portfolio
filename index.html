@@ -1518,6 +1518,7 @@
           <span class="stack-tag">Streamlit</span>
         </div>
         <a href="https://cardiac-risk.streamlit.app" target="_blank" class="project-link">Live Demo →</a>
+        <a href="https://github.com/dhrisit07-cloud/cardiac-risk-predictor" target="_blank" class="project-link">GitHub ↗</a>
       </div>
 
       <div class="project-card reveal">
@@ -1533,7 +1534,7 @@
           <span class="stack-tag">YOLOv8</span>
           <span class="stack-tag">OpenCV</span>
         </div>
-        <a href="https://github.com/dhrisit07-cloud" target="_blank" class="project-link">View on GitHub →</a>
+        <a href="https://github.com/dhrisit07-cloud/Focus-Guardian" target="_blank" class="project-link">View on GitHub →</a>
       </div>
 
       <div class="project-card reveal">
@@ -1548,7 +1549,7 @@
           <span class="stack-tag">React</span>
           <span class="stack-tag">FastAPI</span>
         </div>
-        <a href="https://github.com/dhrisit07-cloud" target="_blank" class="project-link">View on GitHub →</a>
+        <a href="https://github.com/dhrisit07-cloud/SANGAI" target="_blank" class="project-link">View on GitHub →</a>
       </div>
 
     </div>
@@ -1768,14 +1769,14 @@
       const title = card.querySelector('.project-title').textContent;
       const desc = card.querySelector('.project-desc').innerHTML;
       const tags = Array.from(card.querySelectorAll('.stack-tag')).map(t => `<span class="modal-tag">${t.textContent}</span>`).join('');
-      const link = card.querySelector('.project-link');
+      const projectLinks = Array.from(card.querySelectorAll('.project-link'));
       
-      let footerHtml = '';
-      if (link) {
+      let footerHtml = projectLinks.map((link, index) => {
         const href = link.getAttribute('href');
         const text = link.innerText;
-        footerHtml = `<a href="${href}" target="_blank" class="modal-btn primary">${text}</a>`;
-      }
+        const btnClass = index === 0 ? 'primary' : 'secondary';
+        return `<a href="${href}" target="_blank" class="modal-btn ${btnClass}">${text}</a>`;
+      }).join('');
       
       // If there are multiple links or specific structure, handle accordingly
       // For now, let's just use the primary link provided in the card
