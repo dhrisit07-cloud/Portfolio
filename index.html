@@ -577,34 +577,66 @@
   }
 
   /* SKILLS */
-  #skills { background: var(--bg); }
+  #skills { background: var(--bg); position: relative; }
+  
+  #skills .container {
+    padding: 0 5%; /* match container side padding in reference */
+  }
 
   .skills-layout {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 2rem;
+    grid-template-columns: repeat(2, 1fr); /* Default to 2 columns for tablet/laptop */
+    gap: 1.5rem; /* slightly tighter gap to match reference ratio at 640px */
+  }
+
+  @media (min-width: 1024px) {
+    .skills-layout {
+      grid-template-columns: repeat(3, 1fr); /* 3 columns on desktop */
+      gap: 2rem;
+    }
+  }
+
+  @media (max-width: 638px) {
+    .skills-layout {
+      grid-template-columns: 1fr; /* 1 column below ~638px (matching the 636px ref) */
+      gap: 1.25rem;
+    }
   }
 
   .skill-group {
-    background: var(--surface);
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
     border: 1px solid var(--border);
     border-radius: 14px;
-    padding: 1.8rem;
-    transition: border-color 0.3s;
+    padding: 2rem 1.5rem; /* adjusted padding for better ratio */
+    min-height: 320px; /* adjusted from 400px to match reference vertical ratio */
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
   }
 
   .skill-group:hover { border-color: rgba(123,94,167,0.3); }
 
   .skill-group-title {
     font-family: 'DM Mono', monospace;
-    font-size: 0.68rem;
+    font-size: 0.82rem;
     letter-spacing: 0.15em;
     color: var(--accent2);
     text-transform: uppercase;
-    margin-bottom: 1.2rem;
+    margin-bottom: 0.6rem;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+  }
+
+  .skill-description {
+    font-size: 0.8rem;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+    max-width: 90%;
   }
 
   .skill-group-title::after {
@@ -618,6 +650,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0.55rem;
+    margin-top: auto;
   }
 
   .skill-tag {
@@ -1044,31 +1077,28 @@
   }
 
   /* RESPONSIVE */
-  @media (max-width: 768px) {
-    .hero-content,
-    .about-grid,
-    .skills-layout,
-    .projects-grid,
-    .ach-grid,
-    .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-
-    .hero-visual { display: none; }
-
-    nav ul { display: none; }
-    .hamburger { display: flex; }
+  @media (max-width: 639px) {
+    /* Enforce 1 column below 640px for all grid items */
+    .skills-layout, .projects-grid, .ach-grid { grid-template-columns: 1fr !important; gap: 1.5rem !important; }
+    
+    .hero-content, .about-grid, .contact-grid { grid-template-columns: 1fr !important; gap: 2rem !important; }
+    .hero-visual { display: flex !important; margin-top: 3rem; justify-content: center; }
+    nav ul { display: none !important; }
+    .hamburger { display: flex !important; }
   }
 
-  @media (min-width: 769px) and (max-width: 900px) {
-    .hero-content,
-    .about-grid,
-    .skills-layout,
-    .projects-grid,
-    .ach-grid,
-    .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+  @media (min-width: 640px) and (max-width: 1024px) {
+    /* Switch grids to 2 columns starting at 640px */
+    .skills-layout, .projects-grid, .ach-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 1.5rem !important; }
+    
+    /* Keep wide text sections in 1 column for better readability on tablets */
+    .hero-content, .about-grid, .contact-grid { grid-template-columns: 1fr !important; gap: 2.5rem !important; }
+    .hero-visual { display: flex !important; margin-top: 4rem; justify-content: center; }
+  }
 
-    .hero-visual { display: none; }
-
-    nav ul { gap: 1.5rem; }
+  @media (min-width: 1025px) {
+    /* 3 columns on full desktop screens */
+    .skills-layout, .projects-grid, .ach-grid { grid-template-columns: repeat(3, 1fr) !important; gap: 2.2rem !important; }
   }
 
   /* Glowing line separator */
@@ -1296,6 +1326,7 @@
     <div class="skills-layout">
       <div class="skill-group reveal">
         <div class="skill-group-title">Languages</div>
+        <div class="skill-description">Core programming languages used across application and ML workflows.</div>
         <div class="skill-tags">
           <span class="skill-tag">Python</span>
           <span class="skill-tag">C</span>
@@ -1308,6 +1339,7 @@
 
       <div class="skill-group reveal">
         <div class="skill-group-title">Frontend</div>
+        <div class="skill-description">Building modern, responsive user interfaces with focus on interaction design.</div>
         <div class="skill-tags">
           <span class="skill-tag">React.js</span>
           <span class="skill-tag">Next.js</span>
@@ -1319,6 +1351,7 @@
 
       <div class="skill-group reveal">
         <div class="skill-group-title">Backend & APIs</div>
+        <div class="skill-description">Scalable server architectures and production-grade RESTful web services.</div>
         <div class="skill-tags">
           <span class="skill-tag">FastAPI</span>
           <span class="skill-tag">Flask</span>
@@ -1331,6 +1364,7 @@
 
       <div class="skill-group reveal">
         <div class="skill-group-title">ML / AI / CV</div>
+        <div class="skill-description">Deep learning models, computer vision pipelines, and explainable AI solutions.</div>
         <div class="skill-tags">
           <span class="skill-tag">PyTorch</span>
           <span class="skill-tag">XGBoost</span>
@@ -1345,8 +1379,9 @@
         </div>
       </div>
 
-      <div class="skill-group reveal" style="grid-column: span 2;">
+      <div class="skill-group reveal">
         <div class="skill-group-title">Tools & Platforms</div>
+        <div class="skill-description">Essential development ecosystems and tools for version control and deployment.</div>
         <div class="skill-tags">
           <span class="skill-tag">Git</span>
           <span class="skill-tag">GitHub</span>

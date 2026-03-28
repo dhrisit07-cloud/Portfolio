@@ -5,7 +5,7 @@
 
 .achievements-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
 }
 
@@ -43,14 +43,25 @@
   line-height: 1.6;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 639px) {
   .achievements-grid {
     grid-template-columns: 1fr;
+    gap: 1.5rem;
   }
   .achievement-card {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    padding: 2rem;
+    padding: 1.5rem;
+  }
+}
+
+@media (min-width: 640px) and (max-width: 1024px) {
+  .achievements-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  .achievement-card {
+    padding: 1.5rem;
   }
 }
