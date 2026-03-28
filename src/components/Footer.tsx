@@ -19,7 +19,7 @@ const Footer: React.FC = () => {
             <a href="https://github.com/dhrisit07-cloud" target="_blank" rel="noopener noreferrer" className="footer-link">
               <FaGithub size={20} />
             </a>
-            <a href="https://linkedin.com/in/dhrisit-mazumder" target="_blank" rel="noopener noreferrer" className="footer-link">
+            <a href="https://www.linkedin.com/in/dhrisit-mazumder-37857a321" target="_blank" rel="noopener noreferrer" className="footer-link">
               <FaLinkedin size={20} />
             </a>
             <a href="mailto:dhrisit07@gmail.com" className="footer-link">
