@@ -1,6 +1,14 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="dark">
 <head>
+<script>
+  (function() {
+    const savedTheme = localStorage.getItem('theme');
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'light');
+    document.documentElement.setAttribute('data-theme', initialTheme);
+  })();
+</script>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Dhrisit Mazumder — ML Engineer & Full-Stack Developer</title>
@@ -20,6 +28,60 @@
     --text: #e8eaf6;
     --muted: #6b7a99;
     --glow: rgba(0,240,255,0.15);
+    --nav-bg: rgba(5, 8, 16, 0.7);
+    --grid-line: rgba(255, 255, 255, 0.02);
+    --hero-glow-1: rgba(0, 240, 255, 0.07);
+    --hero-glow-2: rgba(123, 94, 167, 0.1);
+    --hero-glow-3: rgba(255, 107, 53, 0.05);
+    --chip-bg: rgba(0, 240, 255, 0.06);
+    --chip-border: rgba(0, 240, 255, 0.15);
+    --chip-bg-hover: rgba(0, 240, 255, 0.14);
+    --chip-border-hover: rgba(0, 240, 255, 0.4);
+    --chip-border-tooltip: rgba(0, 240, 255, 0.2);
+    --project-num-hover: rgba(0, 240, 255, 0.25);
+    --project-num-color: rgba(0, 240, 255, 0.12);
+    --modal-bg: rgba(22, 27, 34, 0.95);
+    --modal-overlay-bg: rgba(13, 17, 23, 0.85);
+    --modal-shadow: 0 25px 80px rgba(0, 0, 0, 0.6);
+    --cursor-color: rgba(0, 240, 255, 0.6);
+    --cursor-color-hover: rgba(0, 240, 255, 0.8);
+    --scrollbar-track: #050810;
+    --scrollbar-thumb: #7b5ea7;
+    --card-glow-hover: 0 0 30px rgba(0, 240, 255, 0.15), 0 20px 60px rgba(0, 0, 0, 0.5);
+  }
+
+  html[data-theme="light"] {
+    --bg: #f8fafc;
+    --bg2: #f1f5f9;
+    --surface: #ffffff;
+    --surface2: #e2e8f0;
+    --border: rgba(15, 23, 42, 0.08);
+    --accent: #0284c7;
+    --accent2: #6d28d9;
+    --accent3: #ea580c;
+    --text: #0f172a;
+    --muted: #475569;
+    --glow: rgba(14, 165, 233, 0.06);
+    --nav-bg: rgba(248, 250, 252, 0.8);
+    --grid-line: rgba(15, 23, 42, 0.03);
+    --hero-glow-1: rgba(14, 165, 233, 0.04);
+    --hero-glow-2: rgba(109, 40, 217, 0.04);
+    --hero-glow-3: rgba(234, 88, 12, 0.02);
+    --chip-bg: rgba(2, 132, 199, 0.05);
+    --chip-border: rgba(2, 132, 199, 0.12);
+    --chip-bg-hover: rgba(2, 132, 199, 0.12);
+    --chip-border-hover: rgba(2, 132, 199, 0.4);
+    --chip-border-tooltip: rgba(2, 132, 199, 0.2);
+    --project-num-hover: rgba(2, 132, 199, 0.25);
+    --project-num-color: rgba(2, 132, 199, 0.12);
+    --modal-bg: rgba(255, 255, 255, 0.98);
+    --modal-overlay-bg: rgba(15, 23, 42, 0.45);
+    --modal-shadow: 0 25px 80px rgba(15, 23, 42, 0.08);
+    --cursor-color: rgba(2, 132, 199, 0.6);
+    --cursor-color-hover: rgba(2, 132, 199, 0.8);
+    --scrollbar-track: #f8fafc;
+    --scrollbar-thumb: #cbd5e1;
+    --card-glow-hover: 0 0 20px rgba(2, 132, 199, 0.08), 0 10px 30px rgba(0, 0, 0, 0.08);
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -38,18 +100,22 @@
   .cursor-ring {
     position: fixed;
     width: 36px; height: 36px;
-    border: 2px solid rgba(0,240,255,0.6); /* Thicker boundary */
+    border: 2px solid var(--cursor-color); /* Thicker boundary */
     border-radius: 50%;
     pointer-events: none;
     z-index: 20000; /* Above modal (10000) */
     transform: translate(-50%, -50%);
     transition: transform 0.2s ease, border-color 0.2s ease; /* Only smooth size/color changes */
   }
+  .cursor-ring.hover {
+    transform: translate(-50%, -50%) scale(1.5);
+    border-color: var(--cursor-color-hover);
+  }
 
   /* Scrollbar */
   ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--accent2); border-radius: 2px; }
+  ::-webkit-scrollbar-track { background: var(--scrollbar-track); }
+  ::-webkit-scrollbar-thumb { background: var(--scrollbar-thumb); border-radius: 2px; }
 
   /* NAV */
   nav {
@@ -61,7 +127,7 @@
     justify-content: space-between;
     align-items: center;
     backdrop-filter: blur(20px);
-    background: rgba(5,8,16,0.7);
+    background: var(--nav-bg);
     border-bottom: 1px solid var(--border);
   }
 
@@ -119,17 +185,17 @@
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(ellipse 60% 50% at 70% 50%, rgba(0,240,255,0.07) 0%, transparent 70%),
-      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(123,94,167,0.1) 0%, transparent 60%),
-      radial-gradient(ellipse 30% 30% at 80% 20%, rgba(255,107,53,0.05) 0%, transparent 50%);
+      radial-gradient(ellipse 60% 50% at 70% 50%, var(--hero-glow-1) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, var(--hero-glow-2) 0%, transparent 60%),
+      radial-gradient(ellipse 30% 30% at 80% 20%, var(--hero-glow-3) 0%, transparent 50%);
   }
 
   .grid-overlay {
     position: absolute;
     inset: 0;
     background-image:
-      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+      linear-gradient(var(--grid-line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
     background-size: 60px 60px;
     mask-image: radial-gradient(ellipse 80% 80% at center, black 30%, transparent 100%);
   }
@@ -353,8 +419,8 @@
   }
 
   .chip {
-    background: rgba(0,240,255,0.06);
-    border: 1px solid rgba(0,240,255,0.15);
+    background: var(--chip-bg);
+    border: 1px solid var(--chip-border);
     color: var(--accent);
     font-family: 'DM Mono', monospace;
     font-size: 0.68rem;
@@ -373,8 +439,8 @@
     transition: background 0.2s, border-color 0.2s;
   }
   .chip-tip:hover {
-    background: rgba(0,240,255,0.14);
-    border-color: rgba(0,240,255,0.4);
+    background: var(--chip-bg-hover);
+    border-color: var(--chip-border-hover);
   }
   .chip-tip::after {
     content: attr(data-tip);
@@ -383,7 +449,7 @@
     left: 50%;
     transform: translateX(-50%) translateY(4px);
     background: var(--surface2);
-    border: 1px solid rgba(0,240,255,0.2);
+    border: 1px solid var(--chip-border-tooltip);
     color: var(--text);
     font-size: 0.62rem;
     letter-spacing: 0.04em;
@@ -654,7 +720,7 @@
   }
 
   .skill-tag:hover {
-    background: rgba(0,240,255,0.08);
+    background: var(--chip-bg-hover);
     border-color: var(--accent);
     color: var(--accent);
   }
@@ -689,7 +755,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(0,240,255,0.04), transparent);
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, var(--glow), transparent);
     opacity: 0;
     transition: opacity 0.3s;
   }
@@ -697,12 +763,12 @@
   .project-card:hover {
     border-color: var(--accent);
     transform: translateY(-8px);
-    box-shadow: 0 0 30px rgba(0,240,255,0.15), 0 20px 60px rgba(0,0,0,0.5); /* Stronger glow */
+    box-shadow: var(--card-glow-hover); /* Stronger glow */
     cursor: pointer;
   }
 
   .project-card:hover .project-num {
-    color: rgba(0, 240, 255, 0.25);
+    color: var(--project-num-hover);
   }
 
   .project-card:hover::before { opacity: 1; }
@@ -711,7 +777,7 @@
     font-family: 'Syne', sans-serif;
     font-weight: 800;
     font-size: 3rem; /* Slightly reduced from 3.5rem */
-    color: rgba(0, 240, 255, 0.12); /* More visible cyan */
+    color: var(--project-num-color); /* More visible cyan */
     line-height: 1;
     margin-bottom: 0.5rem;
     transition: color 0.3s ease;
@@ -735,7 +801,7 @@
   .modal-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(13, 17, 23, 0.85);
+    background: var(--modal-overlay-bg);
     backdrop-filter: blur(12px);
     z-index: 10000;
     display: none; /* Shown via JS */
@@ -752,14 +818,14 @@
   }
 
   .modal-card {
-    background: rgba(22, 27, 34, 0.95);
+    background: var(--modal-bg);
     border: 1px solid var(--border);
     border-radius: 20px;
     max-width: 650px;
     width: 100%;
     padding: 2.5rem;
     position: relative;
-    box-shadow: 0 25px 80px rgba(0,0,0,0.6);
+    box-shadow: var(--modal-shadow);
     transform: scale(0.9);
     transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
@@ -1097,6 +1163,55 @@
     background-size: 200px;
   }
 
+  .nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  /* Theme Toggle Button */
+  .theme-toggle {
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text);
+    transition: all 0.3s ease;
+    z-index: 200;
+  }
+
+  .theme-toggle:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(0, 240, 255, 0.05);
+  }
+
+  .theme-toggle svg {
+    transition: transform 0.5s ease;
+  }
+  .theme-toggle:hover svg {
+    transform: rotate(15deg) scale(1.1);
+  }
+
+  /* Show sun/moon icon based on active theme */
+  html[data-theme='light'] .theme-toggle .sun-icon {
+    display: none;
+  }
+  html[data-theme='light'] .theme-toggle .moon-icon {
+    display: block;
+  }
+  html[data-theme='dark'] .theme-toggle .sun-icon {
+    display: block;
+  }
+  html[data-theme='dark'] .theme-toggle .moon-icon {
+    display: none;
+  }
+
   /* HAMBURGER */
   .hamburger {
     display: none;
@@ -1252,19 +1367,25 @@
 <!-- NAV -->
 <nav>
   <div class="logo">DM<span>.</span></div>
-  <ul>
-    <li><a href="#about">About</a></li>
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="https://drive.google.com/file/d/1uRU4UV40gReP-KM_hJ40tVajdSrl4M9Z/view?usp=sharing" target="_blank" rel="noopener noreferrer">Resume</a></li>
-    <li><a href="#achievements">Awards</a></li>
-    <li><a href="#contact">Contact</a></li>
-  </ul>
-  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
+  <div class="nav-right">
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="https://drive.google.com/file/d/1uRU4UV40gReP-KM_hJ40tVajdSrl4M9Z/view?usp=sharing" target="_blank" rel="noopener noreferrer">Resume</a></li>
+      <li><a href="#achievements">Awards</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+      <svg class="sun-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+      <svg class="moon-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+    </button>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -1690,6 +1811,15 @@
 </footer>
 
 <script>
+  // Theme toggle logic
+  const themeToggle = document.getElementById('themeToggle');
+  themeToggle.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+  });
+
   // Hamburger / mobile nav
   const hamburger = document.getElementById('hamburger');
   const mobileNav = document.getElementById('mobileNav');
@@ -1716,14 +1846,12 @@
     ring.style.top = e.clientY + 'px';
   });
 
-  document.querySelectorAll('a, button').forEach(el => {
+  document.querySelectorAll('a, button, .project-card, .skill-tag').forEach(el => {
     el.addEventListener('mouseenter', () => {
-      ring.style.transform = 'translate(-50%, -50%) scale(1.5)';
-      ring.style.borderColor = 'rgba(0,240,255,0.8)';
+      ring.classList.add('hover');
     });
     el.addEventListener('mouseleave', () => {
-      ring.style.transform = 'translate(-50%, -50%) scale(1)';
-      ring.style.borderColor = 'rgba(0,240,255,0.6)';
+      ring.classList.remove('hover');
     });
   });
 

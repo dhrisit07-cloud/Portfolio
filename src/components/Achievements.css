@@ -14,13 +14,13 @@
   align-items: flex-start;
   gap: 1.5rem;
   padding: 2.5rem;
-  background: linear-gradient(145deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+  background: var(--achievement-card-bg);
 }
 
 .achievement-icon-wrapper {
   flex-shrink: 0;
   padding: 1rem;
-  background: rgba(255, 215, 0, 0.1);
+  background: var(--achievement-icon-bg);
   border-radius: 16px;
   color: #fbbf24;
 }

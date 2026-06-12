@@ -1,9 +1,23 @@
-import React, { useState } from 'react';
-import { Menu, X, Terminal } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Menu, X, Terminal, Sun, Moon } from 'lucide-react';
 import './Navbar.css';
 
 const Navbar: React.FC = () => {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
+    const saved = localStorage.getItem('theme');
+    if (saved === 'dark' || saved === 'light') return saved;
+    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return systemPrefersDark ? 'dark' : 'light';
+  });
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+
+  const toggleTheme = () => {
+    setTheme((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  };
 
   const toggleMobileMenu = () => {
     setIsMobileOpen(!isMobileOpen);
@@ -26,24 +40,30 @@ const Navbar: React.FC = () => {
           <span>Dhrisit<span className="text-gradient">.dev</span></span>
         </a>
 
-        <ul className={`nav-links ${isMobileOpen ? 'mobile-open' : ''}`}>
-          {navItems.map((item) => (
-            <li key={item.label}>
-              <a 
-                href={item.href} 
-                className="nav-link" 
-                onClick={() => setIsMobileOpen(false)}
-                {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-              >
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
+        <div className="nav-actions">
+          <ul className={`nav-links ${isMobileOpen ? 'mobile-open' : ''}`}>
+            {navItems.map((item) => (
+              <li key={item.label}>
+                <a 
+                  href={item.href} 
+                  className="nav-link" 
+                  onClick={() => setIsMobileOpen(false)}
+                  {...(item.external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                >
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
 
-        <button className="nav-mobile-btn" onClick={toggleMobileMenu}>
-          {isMobileOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+          <button className="theme-toggle-btn" onClick={toggleTheme} aria-label="Toggle theme">
+            {theme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+          </button>
+
+          <button className="nav-mobile-btn" onClick={toggleMobileMenu}>
+            {isMobileOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
       </div>
     </nav>
   );
